@@ -29,3 +29,6 @@ requiredFiles = [".replit", "replit.nix", ".config", "venv"]
 
 [deployment]
 run = ["sh", "-c", "python3 main.py"]
+
+[agent]
+expertMode = true

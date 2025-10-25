@@ -1,0 +1,87 @@
+Campus Connect: MVP Definition
+
+1. Core Problem to Solve
+
+The primary problem on campus is information chaos. Students miss important notices, clubs struggle to promote events, and there is no single, trusted source for "what's happening."
+
+The MVP will solve this by creating a single, filterable, real-time source of truth for campus announcements and events.
+
+2. Target Users (Initial Focus)
+
+Students (as Consumers): The primary audience. They need a simple, centralized way to see what's going on.
+
+Club Organizers (as Creators): A key group that needs an audience. They are the early adopters who will provide content.
+
+Faculty/Admin (as Creators): The source of official, "must-see" information (e.g., fee deadlines, exam schedules).
+
+3. MVP Features
+
+Feature 1: The Unified Hub (The "What's On" Board)
+
+This feature directly combines the "Centralized Event & Notice Board" and the "Club Space" (but only the announcement part).
+
+For Students (The Feed):
+
+A single, mobile-friendly webpage.
+
+A real-time feed of all posts, with the newest at the top.
+
+Simple toggle filters: All, Official Notices, Club Events.
+
+A search bar.
+
+For Creators (Clubs & Admin):
+
+A simple, secure login.
+
+A "Create Post" button that opens a simple form.
+
+Post type selector:
+
+Notice: Just a title and a body of text.
+
+Event: Title, body, plus Date, Time, and Location fields.
+
+Events automatically appear in the feed and are highlighted on their day.
+
+Feature 2: The "Suggestion Box" (Simple Feedback)
+
+This is the MVP version of the "Smart Complaint System" and "Feedback System." Before building a complex system with routing, tickets, and statuses, we must first validate if students will use it and what they will submit.
+
+For Students:
+
+A single "Feedback / Suggestion" link in the navigation.
+
+A simple, anonymous (or optional-name) form with:
+
+A dropdown menu for Category (e.g., "Hostel," "Academics," "Campus," "Suggestion").
+
+A message box.
+
+On the Backend (MVP Logic):
+
+The form doesn't create a ticket. It simply formats and sends an email to a single, designated admin account (e.g., dean.studentwelfare@college.edu).
+
+This delivers immediate value (feedback is collected) with almost zero development complexity.
+
+4. What is NOT in the MVP (Deferred for Phase 2)
+
+Smart Complaint/Request System:
+
+Why: The "Suggestion Box" (Feature 2) is the MVP. We will first collect data on the types and volume of complaints. If it gets heavy usage, we will build a full-fledged ticketing system in Phase 2.
+
+Attendance or Timetable Tracker:
+
+Why: This is a major technical project, not a communication one. It requires deep, secure integration with the college's private academic database (SIS). It's a "Future Vision" feature, not an MVP feature.
+
+Club/Project Collaboration Space:
+
+Why: The MVP (Feature 1) gives clubs a voice. It does not give them internal management tools (like chat, task lists, or file sharing). This is a "product within a product" and should be built later, after the central hub is successful.
+
+5. Success Metrics (How we know it's working)
+
+Adoption: 50% of students have visited the site within the first month.
+
+Engagement (Creators): At least 10 new events or notices are posted per week by clubs and admin.
+
+Validation (Feedback): At least 20 meaningful submissions are made through the "Suggestion Box" in the first month (this validates the need for Phase 2).

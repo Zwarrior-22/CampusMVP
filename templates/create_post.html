@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Create Post - Campus Connect{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Create New Post</h1>
+    
+    <form method="POST" action="{{ url_for('create_post') }}" id="postForm">
+        <div class="form-group">
+            <label for="post_type">Post Type</label>
+            <select id="post_type" name="post_type" required class="form-input" onchange="toggleEventFields()">
+                <option value="">Select type...</option>
+                <option value="notice">Notice</option>
+                <option value="event">Event</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required class="form-input" placeholder="Enter post title">
+        </div>
+
+        <div class="form-group">
+            <label for="body">Description</label>
+            <textarea id="body" name="body" required class="form-input" rows="6" placeholder="Enter post description"></textarea>
+        </div>
+
+        <div id="eventFields" style="display: none;">
+            <h3>Event Details</h3>
+            
+            <div class="form-group">
+                <label for="event_date">Event Date</label>
+                <input type="date" id="event_date" name="event_date" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label for="event_time">Event Time</label>
+                <input type="time" id="event_time" name="event_time" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label for="event_location">Event Location</label>
+                <input type="text" id="event_location" name="event_location" class="form-input" placeholder="e.g., Main Auditorium">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Post</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleEventFields() {
+    const postType = document.getElementById('post_type').value;
+    const eventFields = document.getElementById('eventFields');
+    
+    if (postType === 'event') {
+        eventFields.style.display = 'block';
+        document.getElementById('event_date').required = true;
+    } else {
+        eventFields.style.display = 'none';
+        document.getElementById('event_date').required = false;
+    }
+}
+</script>
+{% endblock %}

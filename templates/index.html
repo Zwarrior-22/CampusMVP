@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Campus Connect{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>What's Happening on Campus</h1>
+    <p>Your single source of truth for campus announcements and events</p>
+</div>
+
+<div class="feed-controls">
+    <form method="GET" action="{{ url_for('index') }}" class="search-form">
+        <input type="text" name="search" placeholder="Search posts..." value="{{ search_query }}" class="search-input">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <div class="filter-buttons">
+        <a href="{{ url_for('index', filter='all') }}" class="btn {% if filter_type == 'all' %}btn-primary{% else %}btn-secondary{% endif %}">All</a>
+        <a href="{{ url_for('index', filter='official') }}" class="btn {% if filter_type == 'official' %}btn-primary{% else %}btn-secondary{% endif %}">Official Notices</a>
+        <a href="{{ url_for('index', filter='club') }}" class="btn {% if filter_type == 'club' %}btn-primary{% else %}btn-secondary{% endif %}">Club Events</a>
+    </div>
+</div>
+
+<div class="posts-feed">
+    {% if posts %}
+        {% for post in posts %}
+            <div class="post-card {% if post.is_official %}official{% endif %} {% if post.post_type == 'event' and post.is_upcoming_event() %}upcoming-event{% endif %}">
+                <div class="post-header">
+                    <h2>{{ post.title }}</h2>
+                    <div class="post-meta">
+                        {% if post.is_official %}
+                            <span class="badge official-badge">Official</span>
+                        {% else %}
+                            <span class="badge club-badge">{{ post.author.organization }}</span>
+                        {% endif %}
+                        <span class="badge type-badge">{{ post.post_type.title() }}</span>
+                    </div>
+                </div>
+                
+                <div class="post-body">
+                    {{ post.body }}
+                </div>
+
+                {% if post.post_type == 'event' %}
+                    <div class="event-details">
+                        <div class="event-info">
+                            <span class="event-icon">📅</span>
+                            <strong>Date:</strong> {{ post.event_date.strftime('%B %d, %Y') if post.event_date else 'TBA' }}
+                        </div>
+                        <div class="event-info">
+                            <span class="event-icon">🕐</span>
+                            <strong>Time:</strong> {{ post.event_time or 'TBA' }}
+                        </div>
+                        <div class="event-info">
+                            <span class="event-icon">📍</span>
+                            <strong>Location:</strong> {{ post.event_location or 'TBA' }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="post-footer">
+                    <small>Posted by {{ post.author.full_name }} on {{ post.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <h3>No posts found</h3>
+            <p>{% if search_query %}Try a different search term{% else %}Check back later for updates!{% endif %}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

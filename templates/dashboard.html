@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Campus Connect{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Welcome, {{ current_user.full_name }}</h1>
+    <p>{{ current_user.organization }} | {{ current_user.role.title() }}</p>
+    <a href="{{ url_for('create_post') }}" class="btn btn-primary">+ Create New Post</a>
+</div>
+
+<div class="dashboard-content">
+    <h2>Your Posts</h2>
+    
+    {% if posts %}
+        <div class="posts-list">
+            {% for post in posts %}
+                <div class="post-card">
+                    <div class="post-header">
+                        <h3>{{ post.title }}</h3>
+                        <div class="post-meta">
+                            <span class="badge type-badge">{{ post.post_type.title() }}</span>
+                            {% if post.is_official %}
+                                <span class="badge official-badge">Official</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="post-body">
+                        {{ post.body }}
+                    </div>
+
+                    {% if post.post_type == 'event' %}
+                        <div class="event-details">
+                            <div class="event-info">
+                                <strong>Date:</strong> {{ post.event_date.strftime('%B %d, %Y') if post.event_date else 'TBA' }}
+                            </div>
+                            <div class="event-info">
+                                <strong>Time:</strong> {{ post.event_time or 'TBA' }}
+                            </div>
+                            <div class="event-info">
+                                <strong>Location:</strong> {{ post.event_location or 'TBA' }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="post-footer">
+                        <small>Posted on {{ post.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                        <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" style="display: inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No posts yet</h3>
+            <p>Create your first post to get started!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User, Post
+from models import db, User, Post, Feedback
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -74,7 +74,12 @@ def logout():
 @login_required
 def dashboard():
     user_posts = Post.query.filter_by(author_id=current_user.id).order_by(Post.created_at.desc()).all()
-    return render_template('dashboard.html', posts=user_posts)
+    
+    feedback_submissions = None
+    if current_user.role == 'admin':
+        feedback_submissions = Feedback.query.order_by(Feedback.created_at.desc()).all()
+    
+    return render_template('dashboard.html', posts=user_posts, feedback_submissions=feedback_submissions)
 
 @app.route('/post/create', methods=['GET', 'POST'])
 @login_required
@@ -122,12 +127,38 @@ def delete_post(post_id):
     flash('Post deleted successfully!', 'success')
     return redirect(url_for('dashboard'))
 
+@app.route('/feedback/update/<int:feedback_id>', methods=['POST'])
+@login_required
+def update_feedback_status(feedback_id):
+    if current_user.role != 'admin':
+        flash('Only admins can update feedback status', 'error')
+        return redirect(url_for('dashboard'))
+    
+    feedback_item = Feedback.query.get_or_404(feedback_id)
+    status = request.form.get('status')
+    
+    if status in ['pending', 'reviewed', 'resolved']:
+        feedback_item.status = status
+        db.session.commit()
+        flash('Feedback status updated!', 'success')
+    
+    return redirect(url_for('dashboard'))
+
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     if request.method == 'POST':
-        name = request.form.get('name', 'Anonymous')
+        name = request.form.get('name') or 'Anonymous'
         category = request.form.get('category')
         message = request.form.get('message')
+        
+        new_feedback = Feedback(
+            name=name,
+            category=category,
+            message=message
+        )
+        
+        db.session.add(new_feedback)
+        db.session.commit()
         
         flash('Thank you for your feedback! It has been sent to the admin team.', 'success')
         return redirect(url_for('index'))

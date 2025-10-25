@@ -423,6 +423,39 @@ footer {
     margin-top: 4rem;
 }
 
+.feedback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.feedback-card {
+    background-color: var(--bg-white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--primary-color);
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.feedback-body {
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+.feedback-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;

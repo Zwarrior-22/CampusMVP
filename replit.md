@@ -27,6 +27,8 @@ Campus Connect is a web-based platform designed to solve information chaos on ca
 - **Anonymous Feedback**: Optional name field
 - **Categorized**: Hostel, Academics, Campus, Suggestion, Other
 - **Simple Submission**: Lightweight form for student feedback
+- **Admin Dashboard**: Admin users can view and manage all feedback submissions
+- **Status Tracking**: Mark feedback as Pending, Reviewed, or Resolved
 
 ## Project Architecture
 
@@ -70,6 +72,11 @@ Campus Connect is a web-based platform designed to solve information chaos on ca
 - event_date, event_time, event_location (for events)
 - created_at
 
+**Feedback Model**:
+- id, name (optional), category, message
+- status (pending/reviewed/resolved)
+- created_at
+
 ## Getting Started
 
 ### Demo Credentials
@@ -100,8 +107,14 @@ Campus Connect is a web-based platform designed to solve information chaos on ca
   - Complete authentication system
   - Post creation and management
   - Student feed with search and filters
-  - Feedback system
+  - Feedback system with database persistence
+  - Admin dashboard for viewing and managing feedback
   - Mobile-responsive design
+  
+## Security Notes (Important for Production)
+- **Demo Admin Account**: The app creates a default admin account (username: admin, password: admin123) for testing purposes. This should be removed or secured before production deployment.
+- **CSRF Protection**: Not implemented in MVP. Should be added using Flask-WTF for production.
+- **Secret Key**: Using a development secret key. Should be changed to a secure random value in production.
 
 ## Not in MVP (Phase 2 Features)
 - ❌ Complex complaint ticketing system

@@ -60,4 +60,49 @@
         </div>
     {% endif %}
 </div>
+
+{% if feedback_submissions is not none %}
+<div class="dashboard-content" style="margin-top: 3rem;">
+    <h2>Student Feedback & Suggestions</h2>
+    <p>Review and manage student submissions</p>
+    
+    {% if feedback_submissions %}
+        <div class="feedback-list">
+            {% for item in feedback_submissions %}
+                <div class="feedback-card">
+                    <div class="feedback-header">
+                        <div>
+                            <strong>{{ item.name }}</strong>
+                            <span class="badge type-badge">{{ item.category.title() }}</span>
+                            <span class="badge {% if item.status == 'pending' %}club-badge{% elif item.status == 'resolved' %}official-badge{% else %}type-badge{% endif %}">
+                                {{ item.status.title() }}
+                            </span>
+                        </div>
+                        <small>{{ item.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                    </div>
+                    
+                    <div class="feedback-body">
+                        {{ item.message }}
+                    </div>
+                    
+                    <div class="feedback-actions">
+                        <form method="POST" action="{{ url_for('update_feedback_status', feedback_id=item.id) }}" style="display: inline-block;">
+                            <select name="status" class="form-input" style="width: auto; display: inline-block; padding: 0.5rem;" onchange="this.form.submit()">
+                                <option value="pending" {% if item.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="reviewed" {% if item.status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                                <option value="resolved" {% if item.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No feedback yet</h3>
+            <p>Student submissions will appear here</p>
+        </div>
+    {% endif %}
+</div>
+{% endif %}
 {% endblock %}

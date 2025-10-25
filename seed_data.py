@@ -7,6 +7,10 @@ def seed_database():
     with app.app_context():
         print("Seeding database with sample data...")
         
+        if User.query.filter_by(username='dramaclub').first():
+            print("Sample data already exists. Skipping seeding.")
+            return
+        
         club1 = User(
             username='dramaclub',
             password_hash=generate_password_hash('password123'),
